@@ -109,12 +109,42 @@ User message: \"{user_message.strip()}\"
 Tool:
 """
 
-The response is parsed to return one of:
-- caption
-- VQA
-- compare_caption
-- get_info
-- rag_answer
+## 📊 Assessment & Evaluation
+
+### ✅ Tool Selection Evaluation
+
+The AI agent’s ability to choose the correct tool was tested through various types of user inputs:
+
+| Input Example                          | Expected Tool     | Tool Selected |
+|---------------------------------------|-------------------|---------------|
+| "What do you see in this image?"      | caption           | caption    |
+| "How many people are there?"         | vqa               | vqa        |
+| "Tell me about the monument"         | get_info          | get_info   |
+| "This image is about climate change" | compare_caption   | x caption |
+| "Why is this scene important?"       | rag_answer        | rag_answer |
+
+The agent performs well in most cases when user queries are clearly phrased. The prompt engineering and use of LLaMA3 hosted via Groq allow for nuanced decisions.
+
+---
+
+### Output Validation
+
+- **Captioning:** Captions align well with the image content.
+- **VQA:** BLIP is able to answer direct questions with reasonable accuracy.
+- **Wikipedia Info:** When captions yield recognizable terms, the retrieved summaries are relevant and accurate.
+- **RAG Response:** Multi-source answers show effective blending of visual and factual content.
+- **Compare Caption:** Matches are assessed using a similarity score. Helpful in checking human descriptions vs model-generated ones.
+
+---
+
+### Known Limitations
+
+- **Wikipedia Retrieval:** Not all image captions yield relevant Wikipedia pages.
+- **Agent Overlap:** Some user queries could validly trigger more than one tool (e.g., factual + deep reasoning).
+- **Model Hallucinations:** LLMs may occasionally include irrelevant or incorrect details if context is weak or ambiguous.
+- **Single-image Input:** Current version supports only one image at a time for interaction.
+- **Caption Comparison Ambiguity:** In the `compare_caption` tool, when users phrase their input like “This image is about...” the agent sometimes misinterprets it as a caption to be generated rather than comparing it against the user-provided text. This ambiguity can lead to unexpected behavior if the agent treats the message as a generic caption query instead of a matching task.
+
 
 
 
