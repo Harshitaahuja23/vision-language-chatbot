@@ -110,9 +110,9 @@ Tool:
 """
 ```
 
-## 📊 Assessment & Evaluation
+## Assessment & Evaluation
 
-### ✅ Tool Selection Evaluation
+### Tool Selection Evaluation
 
 The AI agent’s ability to choose the correct tool was tested through various types of user inputs:
 
@@ -192,7 +192,7 @@ The agent performs well in most cases when user queries are clearly phrased. The
 
 This project demonstrates how multimodal AI can make visual content more interactive and informative through natural language. It blends cutting-edge models with thoughtful orchestration — enabling users to ask meaningful questions about images, receive grounded answers, and validate their own captions. It lowers the barrier to understanding complex visual scenes.
 
-> By connecting image content with external factual knowledge (Wikipedia), the assistant becomes more than a caption generator — it becomes a teacher, analyst, and search tool.
+By connecting image content with external factual knowledge (Wikipedia), the assistant becomes more than a caption generator — it becomes a teacher, analyst, and search tool.
 
 ---
 
