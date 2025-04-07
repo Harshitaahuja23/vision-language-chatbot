@@ -108,6 +108,7 @@ Rules:
 User message: \"{user_message.strip()}\"
 Tool:
 """
+```
 
 ## 📊 Assessment & Evaluation
 
