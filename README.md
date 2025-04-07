@@ -126,7 +126,7 @@ The AI agent’s ability to choose the correct tool was tested through various t
 
 The agent performs well in most cases when user queries are clearly phrased. The prompt engineering and use of LLaMA3 hosted via Groq allow for nuanced decisions.
 
----
+
 
 ### Output Validation
 
@@ -146,8 +146,135 @@ The agent performs well in most cases when user queries are clearly phrased. The
 - **Single-image Input:** Current version supports only one image at a time for interaction.
 - **Caption Comparison Ambiguity:** In the `compare_caption` tool, when users phrase their input like “This image is about...” the agent sometimes misinterprets it as a caption to be generated rather than comparing it against the user-provided text. This ambiguity can lead to unexpected behavior if the agent treats the message as a generic caption query instead of a matching task.
 
+## Model & Data Cards
+
+### Model: BLIP (Bootstrapped Language Image Pretraining)
+
+- **Architecture:** Vision-Language Transformer using ViT (Vision Transformer) + GPT2-style decoder.
+- **Variants used:**
+  - `Salesforce/blip-image-captioning-base`
+  - `Salesforce/blip-vqa-base`
+  - `Salesforce/blip-itm-base-coco`
+- **Trained on:** Public datasets like COCO, Conceptual Captions, and Visual Genome.
+- **Use Cases:** Image captioning, Visual Question Answering, Image-Text Matching.
+- **License:** BSD-3-Clause (per Salesforce Research)
 
 
+### Model: LLaMA 3 (via Groq API)
+
+- **Architecture:** Decoder-only transformer, successor to LLaMA 2 by Meta.
+- **Version used:** `llama3-8b-8192` (8 billion parameters).
+- **Hosted on:** [Groq API](https://console.groq.com/)
+- **Use Case:** Tool selection + open-ended reasoning (via RAG).
+- **Advantages:**
+  - **Speed:** Groq runs inference at high throughput (~300+ tokens/sec).
+  - **Open-weight model:** Better transparency & community support.
+- **License:** Open model hosted under Groq terms.
+
+
+### Data Sources
+
+- **Images:** Provided manually by the user via upload.
+- **Wikipedia:** Queried live using [`wikipedia`](https://pypi.org/project/wikipedia/) Python library.
+- **Generated Data:** Captions and reasoning responses are generated on-the-fly.
+
+
+### Ethical & Bias Considerations
+
+- **Bias in Pretrained Models:** Both BLIP and LLaMA3 may reflect biases in their training datasets (e.g., cultural or visual stereotypes).
+- **Fact Reliability:** Wikipedia content may not always be authoritative or fully up-to-date.
+- **Image Misinterpretation:** Captions/VQA results may occasionally hallucinate or misidentify objects in complex images.
+- **Privacy & Safety:** Uploaded images are processed locally and not stored.
+
+## Critical Analysis
+
+### Impact & Significance
+
+This project demonstrates how multimodal AI can make visual content more interactive and informative through natural language. It blends cutting-edge models with thoughtful orchestration — enabling users to ask meaningful questions about images, receive grounded answers, and validate their own captions. It lowers the barrier to understanding complex visual scenes.
+
+> By connecting image content with external factual knowledge (Wikipedia), the assistant becomes more than a caption generator — it becomes a teacher, analyst, and search tool.
+
+---
+
+### Key Learnings
+
+- **Prompt engineering is everything** — the quality and clarity of the LLM’s output heavily depends on how tasks are framed.
+- **Tool orchestration via agents** enables dynamic workflows instead of one-size-fits-all models.
+- **Multimodal alignment is tough** — models like BLIP may hallucinate, and comparing user descriptions with generated captions isn’t always straightforward.
+
+---
+
+### ⚠Limitations
+
+- **Caption matching ambiguity**: The compare_caption tool may misinterpret a user-supplied caption as a general message instead of a candidate for comparison — especially if it starts with phrases like “This image is about…”. This can cause the agent to default to “caption” instead of evaluating similarity.
+- **RAG reliability**: Wikipedia retrieval works well when the caption mentions known terms, but struggles with abstract or artistic scenes.
+- **Groq-specific**: LLaMA3 reasoning is hosted on Groq — inference is fast and free, but requires internet access and an API key.
+
+---
+
+### Next Steps
+
+- Improve caption comparison by parsing user input structure more intelligently (e.g., use regex or prompt enhancements).
+- Add self-evaluation feedback loop to let users rate tool accuracy and model responses.
+- Fine-tune smaller LLMs locally for offline support or privacy-sensitive use cases.
+- Expand retrieval to include additional sources beyond Wikipedia (e.g., Bing, custom corpora).
+
+
+## Documentation & Resource Links
+
+### Setup Instructions
+
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/your-username/vision-language-agent.git
+   cd vision-language-agent
+
+2. **Create Virtual Environment and Install Requirements**
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+pip install -r requirements.txt
+
+3. **Set Up Environment Variables and then run the app**
+cp .env.example .env
+GROQ_API_KEY=your-api-key-here
+
+streamlit run app.py
+
+### Key Resources & Citations
+
+#### Vision-Language Models
+- [BLIP: Bootstrapping Language-Image Pre-training](https://arxiv.org/abs/2201.12086) — Salesforce Research
+- [BLIP GitHub Repository](https://github.com/salesforce/BLIP) — Official BLIP models for captioning, VQA, and image-text matching.
+
+#### Language Models
+- [LLaMA 3 by Meta AI](https://ai.meta.com/blog/meta-llama-3/) — State-of-the-art open-weight large language model (LLaMA3-8B used here).
+- [Groq Inference Platform](https://console.groq.com/docs) — Ultra-low-latency inference for LLaMA, Mixtral, and others.
+
+#### Wikipedia + Retrieval
+- [Wikipedia Python Library](https://pypi.org/project/wikipedia/) — Programmatic access to Wikipedia summaries used in the RAG module.
+
+#### Agents & Reasoning
+- [LangChain: Tool Use & Agents](https://python.langchain.com/) — Framework for building multi-tool LLM-powered agents.
+
+---
+
+### Additional References
+
+- [Transformers Library (HuggingFace)](https://huggingface.co/docs/transformers/index)
+- [Streamlit Docs](https://docs.streamlit.io/) — Used for building the chat interface.
+- [Python-dotenv](https://pypi.org/project/python-dotenv/) — For environment variable handling.
+
+---
+
+### Useful Links
+
+- [Groq API Key Setup](https://console.groq.com/)
+- [Salesforce BLIP Model Hub](https://huggingface.co/Salesforce)
+- [LLaMA 3 License](https://ai.meta.com/resources/models-and-libraries/llama-downloads/)
+- [Wikipedia Disambiguation Handling](https://wikipedia.readthedocs.io/en/latest/code.html#wikipedia.DisambiguationError)
+
+---
 
 
 
