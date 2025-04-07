@@ -21,7 +21,7 @@ The chatbot acts like an **AI Agent**, using a lightweight LLM (hosted on [Groq]
 
 ## Methodology
 
-This project integrates vision-language reasoning using a combination of:
+This project integrates vision-language reasoning using a combination of the following:
 
 ---
 
@@ -63,4 +63,20 @@ This project integrates vision-language reasoning using a combination of:
 - **Transformer Architectures**: BLIP and LLaMA3 are both state-of-the-art transformer-based models
 - **Agent-based Reasoning**: The agent acts as an orchestrator using LLM-driven decision-making
 - **RAG for Context Injection**: Extending the model’s knowledge using external retrieval (Wikipedia)
+
+  ## Implementation & Code
+
+This project is structured with modular Python files and is fully runnable through a **Streamlit** interface.
+
+---
+
+### Runnable Demo (Live Chatbot)
+
+You can run the full chatbot via:
+
+```bash
+streamlit run app.py
+
+GROQ_API_KEY=your_groq_api_key_here
+
 
